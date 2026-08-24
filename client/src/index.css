@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+/* ── Helm design tokens ──────────────────────────────────────────────────
+   FACE Prep's own red, reimagined as an operations-control identity: a deep
+   ink ground instead of the source portal's plain white data-grid, warm red
+   as the single accent (not sprinkled everywhere), calm semantic colours for
+   status. Light theme only for v1 — this is a focused redesign pass, not a
+   full theming system. */
+@theme {
+  --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-ink-950: #0B0E17;
+  --color-ink-900: #10141F;
+  --color-ink-800: #171C2B;
+  --color-ink-700: #232A3D;
+  --color-ink-600: #333B52;
+  --color-ink-400: #6B7386;
+  --color-ink-300: #9298A8;
+
+  --color-paper: #FAFAF9;
+  --color-paper-dim: #F2F1EE;
+  --color-line: #E7E5E0;
+
+  --color-brand-50: #FEF1F1;
+  --color-brand-100: #FCDCDD;
+  --color-brand-400: #EF4A4F;
+  --color-brand-500: #E31B23;
+  --color-brand-600: #C4141B;
+  --color-brand-700: #9E1015;
+
+  --color-amber-signal: #D97706;
+  --color-emerald-signal: #0F9D6E;
+  --color-sky-signal: #0284C7;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink-900);
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--color-brand-100); color: var(--color-brand-700); }
+
+h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+.font-mono { font-family: var(--font-mono); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-ink-300); }
+
+/* Shared component classes (kept minimal — most styling is Tailwind utility
+   classes inline; this file only holds patterns reused many times). */
+.card { background: #fff; border: 1px solid var(--color-line); border-radius: 14px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; border-radius: 10px; font-weight: 600; font-size: 13.5px; padding: 8px 14px; transition: background-color .15s, color .15s, border-color .15s; white-space: nowrap; }
+.btn-brand { background: var(--color-brand-500); color: #fff; }
+.btn-brand:hover { background: var(--color-brand-600); }
+.btn-ghost { background: transparent; color: var(--color-ink-700); border: 1px solid var(--color-line); }
+.btn-ghost:hover { background: var(--color-paper-dim); }
+.btn-danger { background: transparent; color: var(--color-brand-600); border: 1px solid var(--color-brand-100); }
+.btn-danger:hover { background: var(--color-brand-50); }
+
+.chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; padding: 3px 9px; text-transform: uppercase; }
+
+.input { width: 100%; border: 1px solid var(--color-line); border-radius: 10px; padding: 8px 12px; font-size: 13.5px; background: #fff; color: var(--color-ink-900); }
+.input:focus { outline: none; border-color: var(--color-brand-400); box-shadow: 0 0 0 3px var(--color-brand-50); }
+.label { display: block; font-size: 12px; font-weight: 600; color: var(--color-ink-400); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em; }
