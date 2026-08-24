@@ -6,11 +6,18 @@ import { ScrollText, Search } from 'lucide-react'
 export default function Logs() {
   const { authFetch } = useAuth()
   const [rows, setRows] = useState(null)
+  const [forbidden, setForbidden] = useState(false)
   const [q, setQ] = useState('')
-  useEffect(() => { authFetch('/logs').then(r => r.json()).then(setRows) }, [authFetch])
+  useEffect(() => {
+    authFetch('/logs').then(r => {
+      if (r.status === 403) { setForbidden(true); return [] }
+      return r.json()
+    }).then(d => setRows(d || []))
+  }, [authFetch])
 
   const filtered = useMemo(() => (rows || []).filter(l => !q || l.event.toLowerCase().includes(q.toLowerCase())), [rows, q])
 
+  if (forbidden) return <Empty icon={ScrollText} title="Super Admin only" hint="The audit trail is restricted to Super Admin accounts." />
   if (!rows) return <Spinner label="Loading logs…" />
 
   return (

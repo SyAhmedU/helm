@@ -1,6 +1,6 @@
 import express from 'express'
 import { getCollection, setCollection, nextId, usingRedis } from './lib/store.js'
-import { signToken, authRequired, hashPassword, checkPassword, findUserByEmail, ROLES } from './lib/auth.js'
+import { signToken, authRequired, requireRole, ADMIN_ROLES, hashPassword, checkPassword, findUserByEmail, ROLES } from './lib/auth.js'
 import { seedIfEmpty } from './lib/seed.js'
 
 const app = express()
@@ -87,6 +87,9 @@ for (const [name, cfg] of Object.entries(CRUD)) {
   app.post(`/api/${name}`, async (req, res) => {
     const body = req.body || {}
     for (const f of cfg.required) if (body[f] == null || body[f] === '') return res.status(400).json({ error: `Required field '${f}' is missing or empty` })
+    // Privilege escalation guard: only a Super Admin may create another admin-tier account.
+    if (name === 'users' && ADMIN_ROLES.includes(body.role) && req.user.role !== 'Super Admin')
+      return res.status(403).json({ error: 'Only a Super Admin can create an admin-tier account' })
     const rows = await getCollection(name)
     const row = { ...body, id: await freshId(cfg.prefix, rows), createdAt: new Date().toISOString() }
     if (name === 'users') {
@@ -108,6 +111,10 @@ for (const [name, cfg] of Object.entries(CRUD)) {
     const rows = await getCollection(name)
     const i = rows.findIndex(r => r.id === req.params.id)
     if (i < 0) return res.status(404).json({ error: 'Not found' })
+    // Privilege escalation guard: only a Super Admin may promote an account to
+    // an admin-tier role, or edit an account that already holds one.
+    if (name === 'users' && req.user.role !== 'Super Admin' && (ADMIN_ROLES.includes(req.body?.role) || ADMIN_ROLES.includes(rows[i].role)))
+      return res.status(403).json({ error: 'Only a Super Admin can modify an admin-tier account' })
     const patch = { ...req.body }
     delete patch.id
     if (name === 'users') { if (patch.password) patch.password = hashPassword(patch.password); else delete patch.password }
@@ -119,16 +126,20 @@ for (const [name, cfg] of Object.entries(CRUD)) {
 
   app.delete(`/api/${name}/:id`, async (req, res) => {
     const rows = await getCollection(name)
-    const next = rows.filter(r => r.id !== req.params.id)
-    if (next.length === rows.length) return res.status(404).json({ error: 'Not found' })
-    await setCollection(name, next)
+    const target = rows.find(r => r.id === req.params.id)
+    if (!target) return res.status(404).json({ error: 'Not found' })
+    if (name === 'users' && ADMIN_ROLES.includes(target.role) && req.user.role !== 'Super Admin')
+      return res.status(403).json({ error: 'Only a Super Admin can remove an admin-tier account' })
+    await setCollection(name, rows.filter(r => r.id !== req.params.id))
     await log(`${name}.delete`, req, { id: req.params.id })
     res.json({ ok: true })
   })
 }
 
 app.get('/api/attempts', async (req, res) => res.json(await getCollection('attempts')))
-app.get('/api/logs', async (req, res) => {
+// The audit trail is Super-Admin-only — it's a record of who did what, not
+// something every Author/Coordinator account should be able to read.
+app.get('/api/logs', requireRole('Super Admin'), async (req, res) => {
   const logs = await getCollection('logs')
   res.json(logs.slice(-500).reverse())
 })

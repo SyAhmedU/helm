@@ -4,3 +4,6 @@ client/dist/
 data/db.json
 .vercel/
 *.log
+
+.vercel
+.env*
