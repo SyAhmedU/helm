@@ -6,7 +6,21 @@ import { Building2, Layers, Users2, HelpCircle, ClipboardList, GraduationCap, Ro
 export default function Dashboard({ onNavigate }) {
   const { authFetch, user } = useAuth()
   const [data, setData] = useState(null)
-  useEffect(() => { authFetch('/dashboard').then(r => r.json()).then(setData) }, [authFetch])
+  const [error, setError] = useState('')
+  const [attempt, setAttempt] = useState(0)
+  useEffect(() => {
+    let active = true
+    setError('')
+    authFetch('/dashboard').then(async r => {
+      if (!r.ok) throw new Error('The dashboard is unavailable. Please try again.')
+      const result = await r.json()
+      if (!result.counts || !Array.isArray(result.scoreDistribution)) throw new Error('The dashboard returned incomplete data. Please try again.')
+      if (active) setData(result)
+    }).catch(e => { if (active) setError(e.message) })
+    return () => { active = false }
+  }, [authFetch, attempt])
+
+  if (error) return <section className="card p-6" role="alert"><h1 className="font-display text-xl">Couldn't load the command center</h1><p className="text-sm text-ink-400 my-3">{error}</p><button className="btn btn-brand" onClick={() => setAttempt(n => n + 1)}>Try again</button></section>
 
   if (!data) return <Spinner label="Loading command center…" />
   const { counts, activity, attention, scoreDistribution, institutionsBreakdown } = data
@@ -17,7 +31,7 @@ export default function Dashboard({ onNavigate }) {
       <div>
         <p className="text-sm text-ink-400">Welcome back, {user?.name?.split(' ')[0]}</p>
         <h1 className="font-display text-2xl font-bold text-ink-900">Command Center</h1>
-        <p className="text-sm text-ink-400 mt-1 max-w-2xl">The real Authoring Portal drops you straight into a collection list — this rolls every module up into one view, the moment you sign in.</p>
+        <p className="text-sm text-ink-400 mt-1 max-w-2xl">Your institutions, delivery activity and items needing attention, in one view.</p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -36,7 +50,7 @@ export default function Dashboard({ onNavigate }) {
       <div className="grid lg:grid-cols-5 gap-5">
         <div className="lg:col-span-2 card p-5">
           <h3 className="font-display font-semibold text-ink-900 mb-1 flex items-center gap-2"><AlertTriangle size={16} className="text-amber-signal" /> Needs attention</h3>
-          <p className="text-xs text-ink-400 mb-3">Things the real portal would never surface until you happened across them.</p>
+          <p className="text-xs text-ink-400 mb-3">Incomplete setup and open items to review before delivery.</p>
           {!attention.length ? (
             <div className="flex items-center gap-2 text-sm text-emerald-signal py-4"><CheckCircle2 size={16} /> All clear — nothing flagged.</div>
           ) : (

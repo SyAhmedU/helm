@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { NAV } from '../lib/nav.js'
 import { useAuth } from '../AuthContext.jsx'
-import { Command, LogOut, ChevronRight, Anchor } from 'lucide-react'
+import { Command, LogOut, ChevronRight, Anchor, Menu, X } from 'lucide-react'
 
 export default function Shell({ active, onSelect, children }) {
   const { user, logout } = useAuth()
+  const [navOpen, setNavOpen] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
 
   useEffect(() => {
@@ -15,12 +16,30 @@ export default function Shell({ active, onSelect, children }) {
     return () => document.removeEventListener('keydown', onKey)
   }, [])
 
+  useEffect(() => {
+    if (!navOpen) return
+    const previous = document.activeElement
+    const panel = document.getElementById('helm-navigation')
+    panel?.querySelector('button')?.focus()
+    const onKey = e => {
+      if(e.key === 'Escape') setNavOpen(false)
+      if(e.key === 'Tab') {
+        const items = Array.from(panel.querySelectorAll('button,a[href]')).filter(el => el.getClientRects().length)
+        const first = items[0], last = items[items.length - 1]
+        if(e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+        if(!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('keydown', onKey); previous?.focus() }
+  }, [navOpen])
   const activeItem = NAV.flatMap(g => g.items).find(i => i.id === active)
 
   return (
     <div className="min-h-screen flex bg-paper">
       {/* Sidebar */}
-      <aside className="w-64 shrink-0 bg-ink-950 text-white flex flex-col">
+      <aside id="helm-navigation" className={`helm-sidebar ${navOpen ? "is-open" : ""} w-64 shrink-0 bg-ink-950 text-white flex flex-col`}>
+        <button className="helm-nav-close" aria-label="Close navigation" onClick={() => setNavOpen(false)}><X size={20} /></button>
         <div className="flex items-center gap-2.5 px-5 h-16 border-b border-white/10">
           <div className="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center shrink-0"><Anchor size={16} className="text-white" /></div>
           <div className="leading-tight">
@@ -34,7 +53,7 @@ export default function Shell({ active, onSelect, children }) {
               {g.label && <p className="px-2.5 text-[10px] font-bold uppercase tracking-wider text-white/30 mb-1.5">{g.label}</p>}
               <div className="space-y-0.5">
                 {g.items.map(item => (
-                  <button key={item.id} onClick={() => onSelect(item.id)}
+                  <button key={item.id} aria-current={active === item.id ? "page" : undefined} onClick={() => { onSelect(item.id); setNavOpen(false) }}
                     className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13.5px] font-medium transition-colors ${active === item.id ? 'bg-brand-500 text-white' : 'text-white/65 hover:bg-white/5 hover:text-white'}`}>
                     <item.icon size={16} className="shrink-0" />
                     <span className="truncate">{item.label}</span>
@@ -44,7 +63,7 @@ export default function Shell({ active, onSelect, children }) {
             </div>
           ))}
         </nav>
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-white/10"><a className="block px-2.5 py-2 text-xs text-white/65" href="https://syed-launchpad.vercel.app">All projects ↗</a>
           <button onClick={() => setPaletteOpen(true)} className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-[12.5px] text-white/50 hover:bg-white/5 hover:text-white/80 transition-colors">
             <span className="flex items-center gap-2"><Command size={13} /> Jump to…</span>
             <kbd className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">⌘K</kbd>
@@ -52,11 +71,12 @@ export default function Shell({ active, onSelect, children }) {
         </div>
       </aside>
 
+      {navOpen && <button className="helm-nav-backdrop" aria-label="Close navigation" onClick={() => setNavOpen(false)} />}
       {/* Main column */}
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-16 border-b border-line bg-white/80 backdrop-blur px-6 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2 text-sm text-ink-400">
-            <span>Helm</span><ChevronRight size={13} />
+            <button className="helm-nav-toggle" aria-label="Open navigation" aria-controls="helm-navigation" aria-expanded={navOpen} onClick={() => setNavOpen(true)}><Menu size={20} /></button><span>Helm</span><ChevronRight size={13} />
             <span className="font-semibold text-ink-900">{activeItem?.label || 'Command Center'}</span>
           </div>
           <div className="flex items-center gap-3">
@@ -68,7 +88,7 @@ export default function Shell({ active, onSelect, children }) {
             <button onClick={logout} title="Sign out" className="text-ink-400 hover:text-brand-600 p-1.5"><LogOut size={16} /></button>
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <main className="helm-main flex-1 overflow-y-auto p-6"><p className="helm-demo-notice">DEMO WORKSPACE · All records are simulated</p>{children}</main>
       </div>
 
       {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} onSelect={id => { onSelect(id); setPaletteOpen(false) }} />}

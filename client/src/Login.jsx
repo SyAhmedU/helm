@@ -22,7 +22,7 @@ export default function Login() {
         <div className="relative z-10 max-w-md text-white">
           <div className="w-12 h-12 rounded-xl bg-brand-500 flex items-center justify-center mb-8"><Anchor size={22} /></div>
           <h1 className="font-display text-4xl font-bold leading-tight mb-4">One control center for every institution, batch, and assessment.</h1>
-          <p className="text-white/60 text-[15px] leading-relaxed">Helm is a from-scratch redesign of FACE Prep's internal Authoring Portal — a real dashboard, a hierarchical batch explorer instead of buried modals, and analytics on delivery and attempts instead of a raw log.</p>
+          <p className="text-white/60 text-[15px] leading-relaxed">Plan delivery. Find a batch. Understand an attempt. A single operations workspace, with every institution and its learning activity in view.</p>
         </div>
       </div>
       <div className="w-full lg:w-[440px] bg-white flex flex-col justify-center px-8 sm:px-14 py-16">
@@ -31,14 +31,14 @@ export default function Login() {
         <p className="text-sm text-ink-400 mb-7">Staff access — Super Admin, Sub Admin, Coordinator, or Author.</p>
         <form onSubmit={submit} className="space-y-3.5">
           <div>
-            <label className="label">Email</label>
-            <input className="input" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+            <label className="label" htmlFor="helm-email">Email</label>
+            <input className="input" id="helm-email" autoComplete="username" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
           </div>
           <div>
-            <label className="label">Password</label>
-            <input className="input" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+            <label className="label" htmlFor="helm-password">Password</label>
+            <input className="input" id="helm-password" autoComplete="current-password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
           </div>
-          {err && <p className="text-sm text-brand-600">{err}</p>}
+          {err && <p role="alert" className="text-sm text-brand-600">{err}</p>}
           <button className="btn btn-brand w-full justify-center py-2.5" disabled={busy}>{busy ? 'Signing in…' : <>Sign in <ArrowRight size={15} /></>}</button>
         </form>
         <div className="mt-6 flex items-start gap-2 text-xs text-ink-400 bg-paper-dim rounded-xl p-3">
