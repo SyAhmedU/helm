@@ -24,3 +24,12 @@
 Verified end-to-end with a headless Playwright pass (login → every module → forms → pagination → command palette) — **0 console/page errors** on the final build.
 
 Repo: **SyAhmedU/helm** (public — matches amet-ceii's stance; no real data ever touches it). Deploy: **Vercel** → see root `CLAUDE.md` project entry for the live URL once deployed.
+
+
+## Campus operations polish — 2026-10-04
+Responsive mobile sidebar with Escape, focus containment and focus return; persistent simulated-data notice; Launchpad return link. Login labels/autocomplete, clearer copy. Dashboard handles failed/incomplete responses with retry instead of indefinite loading/crash. Client build and browser checks cover failed request/retry/mobile overflow/menu focus using explicitly simulated fixtures. Existing npm test references a missing test/api.verify.mjs; no claim of that suite passing.
+
+
+## UI/UX review — 2026-10-10
+
+Shared mobile form sizing and focus/readability baseline. Existing navigation and demo labeling retained. Browser and build evidence is recorded in `../output/design-review-2026-10-10/`. This is a heuristic/interaction review, not a complete accessibility certification or user study.

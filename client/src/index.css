@@ -70,3 +70,6 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
 .input { width: 100%; border: 1px solid var(--color-line); border-radius: 10px; padding: 8px 12px; font-size: 13.5px; background: #fff; color: var(--color-ink-900); }
 .input:focus { outline: none; border-color: var(--color-brand-400); box-shadow: 0 0 0 3px var(--color-brand-50); }
 .label { display: block; font-size: 12px; font-weight: 600; color: var(--color-ink-400); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em; }
+
+.helm-nav-toggle,.helm-nav-close,.helm-nav-backdrop{display:none}.helm-demo-notice{font-size:10px;letter-spacing:.12em;color:#697386;margin-bottom:20px}
+@media(max-width:767px){.helm-sidebar{display:none;position:fixed;inset:0 auto 0 0;z-index:51;overflow-y:auto}.helm-sidebar.is-open{display:flex}.helm-nav-toggle,.helm-nav-close{display:inline-flex}.helm-nav-close{position:absolute;right:12px;top:20px}.helm-nav-backdrop{display:block;position:fixed;inset:0;z-index:50;background:#0b101a88}.helm-main{padding:18px 14px}.helm-main>div{min-width:0}}
