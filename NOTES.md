@@ -33,3 +33,8 @@ Responsive mobile sidebar with Escape, focus containment and focus return; persi
 ## UI/UX review — 2026-10-10
 
 Shared mobile form sizing and focus/readability baseline. Existing navigation and demo labeling retained. Browser and build evidence is recorded in `../output/design-review-2026-10-10/`. This is a heuristic/interaction review, not a complete accessibility certification or user study.
+
+
+## Upstash DB deleted → moved onto faceprep's DB (2026-10-21)
+
+Own free DB `clever-yeti-89002` was deleted by Upstash (NXDOMAIN; every route hung 60 s+ in the seed middleware). Production now sets `UPSTASH_REDIS_REST_URL/_TOKEN` (sensitive; `lib/store.js` prefers them over the integration's stale `KV_*` vars) → faceprep-campus's DB, keys `helm:*`; demo data re-seeded on first request. ⚠ Shared DB (also holds real faceprep/campusdesk data) — never FLUSHDB.
