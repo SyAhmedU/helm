@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { useAuth } from './AuthContext.jsx'
 import Login from './Login.jsx'
 import Shell from './components/Shell.jsx'
@@ -23,18 +24,30 @@ export default function App() {
   if (!user) return <Login />
 
   return (
-    <Shell active={tab} onSelect={setTab}>
-      {tab === 'dashboard' && <Dashboard onNavigate={setTab} />}
-      {tab === 'institutions' && <Institutions />}
-      {tab === 'batches' && <Batches />}
-      {tab === 'users' && <Users />}
-      {tab === 'questions' && <Questions />}
-      {tab === 'assessments' && <Assessments />}
-      {tab === 'courses' && <Courses />}
-      {tab === 'delivery' && <Delivery />}
-      {tab === 'attempts' && <Attempts />}
-      {tab === 'tags' && <Tags />}
-      {tab === 'logs' && <Logs />}
-    </Shell>
+    <MotionConfig reducedMotion="user">
+      <Shell active={tab} onSelect={setTab}>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={tab}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+          >
+            {tab === 'dashboard' && <Dashboard onNavigate={setTab} />}
+            {tab === 'institutions' && <Institutions />}
+            {tab === 'batches' && <Batches />}
+            {tab === 'users' && <Users />}
+            {tab === 'questions' && <Questions />}
+            {tab === 'assessments' && <Assessments />}
+            {tab === 'courses' && <Courses />}
+            {tab === 'delivery' && <Delivery />}
+            {tab === 'attempts' && <Attempts />}
+            {tab === 'tags' && <Tags />}
+            {tab === 'logs' && <Logs />}
+          </motion.div>
+        </AnimatePresence>
+      </Shell>
+    </MotionConfig>
   )
 }
