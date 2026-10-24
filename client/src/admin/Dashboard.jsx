@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../AuthContext.jsx'
 import { Spinner, StatCard, Pill } from '../components/ui.jsx'
+import SpotlightStat from '../components/SpotlightStat.jsx'
 import { Building2, Layers, Users2, HelpCircle, ClipboardList, GraduationCap, Rocket, Activity, AlertTriangle, TrendingUp, CheckCircle2, ShieldAlert } from 'lucide-react'
 
 export default function Dashboard({ onNavigate }) {
@@ -34,14 +35,15 @@ export default function Dashboard({ onNavigate }) {
         <p className="text-sm text-ink-400 mt-1 max-w-2xl">Your institutions, delivery activity and items needing attention, in one view.</p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <SpotlightStat icon={Rocket} label="Live now" value={activity.liveAdministrations} sub="Open delivery board" onClick={() => onNavigate('delivery')} />
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3">
         <StatCard icon={Building2} label="Institutions" value={counts.institutions} onClick={() => onNavigate('institutions')} />
         <StatCard icon={Layers} label="Batches" value={counts.batches} onClick={() => onNavigate('batches')} />
         <StatCard icon={Users2} label="Students" value={counts.students} sub={`+${counts.staff} staff`} onClick={() => onNavigate('users')} />
         <StatCard icon={HelpCircle} label="Questions" value={counts.questions} onClick={() => onNavigate('questions')} />
         <StatCard icon={ClipboardList} label="Assessments" value={counts.assessments} onClick={() => onNavigate('assessments')} />
         <StatCard icon={GraduationCap} label="Courses" value={counts.courses} onClick={() => onNavigate('courses')} />
-        <StatCard icon={Rocket} label="Live now" value={activity.liveAdministrations} tone="brand" onClick={() => onNavigate('delivery')} />
         <StatCard icon={Activity} label="Attempts today" value={activity.attemptsToday} onClick={() => onNavigate('attempts')} />
         <StatCard icon={TrendingUp} label="Avg. score" value={activity.avgScorePct != null ? `${activity.avgScorePct}%` : '—'} tone="emerald" />
         <StatCard icon={ShieldAlert} label="Violations" value={activity.violations} tone={activity.violations ? 'brand' : 'ink'} onClick={() => onNavigate('attempts')} />
