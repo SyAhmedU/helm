@@ -74,7 +74,7 @@ export default function Dashboard({ onNavigate }) {
             {scoreDistribution.map((v, i) => (
               <div key={i} className="flex-1 flex flex-col items-center justify-end gap-1.5">
                 <span className="text-xs font-semibold text-ink-600">{v}</span>
-                <div className="w-full rounded-t-md bg-brand-400" style={{ height: `${Math.max(v ? 4 : 0, (v / maxDist) * 88)}px` }} />
+                <div className="w-full rounded-t-md bg-ink-950" style={{ height: `${Math.max(v ? 4 : 0, (v / maxDist) * 88)}px` }} />
                 <span className="text-[10px] text-ink-400">{['0–20', '21–40', '41–60', '61–80', '81–100'][i]}%</span>
               </div>
             ))}

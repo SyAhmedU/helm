@@ -1,27 +1,26 @@
 @import "tailwindcss";
 
 /* ── Helm design tokens ──────────────────────────────────────────────────
-   FACE Prep's own red, reimagined as an operations-control identity: a deep
-   ink ground instead of the source portal's plain white data-grid, warm red
-   as the single accent (not sprinkled everywhere), calm semantic colours for
-   status. Light theme only for v1 — this is a focused redesign pass, not a
-   full theming system. */
+   2026-11-15 (CM-approved preview): light warm ground, warm ink for text and
+   primary actions, FACE Prep red only on the logo and the "Live" state (plus
+   error text). Colour says where an assessment is in publishing:
+   Scheduled = amber, Live = red, Completed = neutral. Light theme only. */
 @theme {
   --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --color-ink-950: #0B0E17;
-  --color-ink-900: #10141F;
-  --color-ink-800: #171C2B;
-  --color-ink-700: #232A3D;
-  --color-ink-600: #333B52;
-  --color-ink-400: #6B7386;
-  --color-ink-300: #9298A8;
+  --color-ink-950: #1F1517;
+  --color-ink-900: #241A1C;
+  --color-ink-800: #2E2224;
+  --color-ink-700: #4A3A3D;
+  --color-ink-600: #5C4A4D;
+  --color-ink-400: #6E5C5F;
+  --color-ink-300: #A3938F;
 
-  --color-paper: #FAFAF9;
-  --color-paper-dim: #F2F1EE;
-  --color-line: #E7E5E0;
+  --color-paper: #FAF7F5;
+  --color-paper-dim: #F1EAE6;
+  --color-line: #E8DEDA;
 
   --color-brand-50: #FEF1F1;
   --color-brand-100: #FCDCDD;
@@ -46,7 +45,7 @@ body {
 }
 ::selection { background: var(--color-brand-100); color: var(--color-brand-700); }
 
-h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
 .font-mono { font-family: var(--font-mono); }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -56,10 +55,10 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
 
 /* Shared component classes (kept minimal — most styling is Tailwind utility
    classes inline; this file only holds patterns reused many times). */
-.card { background: #fff; border: 1px solid var(--color-line); border-radius: 14px; }
-.btn { display: inline-flex; align-items: center; gap: 6px; border-radius: 10px; font-weight: 600; font-size: 13.5px; padding: 8px 14px; transition: background-color .15s, color .15s, border-color .15s; white-space: nowrap; }
-.btn-brand { background: var(--color-brand-500); color: #fff; }
-.btn-brand:hover { background: var(--color-brand-600); }
+.card { background: #fff; border: 1px solid transparent; border-radius: 18px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; font-weight: 600; font-size: 13.5px; padding: 8px 16px; transition: background-color .15s, color .15s, border-color .15s; white-space: nowrap; }
+.btn-brand { background: var(--color-ink-950); color: #fff; }
+.btn-brand:hover { background: var(--color-ink-700); }
 .btn-ghost { background: transparent; color: var(--color-ink-700); border: 1px solid var(--color-line); }
 .btn-ghost:hover { background: var(--color-paper-dim); }
 .btn-danger { background: transparent; color: var(--color-brand-600); border: 1px solid var(--color-brand-100); }
@@ -68,8 +67,8 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
 .chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; padding: 3px 9px; text-transform: uppercase; }
 
 .input { width: 100%; border: 1px solid var(--color-line); border-radius: 10px; padding: 8px 12px; font-size: 13.5px; background: #fff; color: var(--color-ink-900); }
-.input:focus { outline: none; border-color: var(--color-brand-400); box-shadow: 0 0 0 3px var(--color-brand-50); }
+.input:focus { outline: none; border-color: var(--color-ink-950); box-shadow: 0 0 0 3px var(--color-paper-dim); }
 .label { display: block; font-size: 12px; font-weight: 600; color: var(--color-ink-400); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em; }
 
-.helm-nav-toggle,.helm-nav-close,.helm-nav-backdrop{display:none}.helm-demo-notice{font-size:10px;letter-spacing:.12em;color:#697386;margin-bottom:20px}
-@media(max-width:767px){.helm-sidebar{display:none;position:fixed;inset:0 auto 0 0;z-index:51;overflow-y:auto}.helm-sidebar.is-open{display:flex}.helm-nav-toggle,.helm-nav-close{display:inline-flex}.helm-nav-close{position:absolute;right:12px;top:20px}.helm-nav-backdrop{display:block;position:fixed;inset:0;z-index:50;background:#0b101a88}.helm-main{padding:18px 14px}.helm-main>div{min-width:0}}
+.helm-nav-toggle,.helm-nav-close,.helm-nav-backdrop{display:none}.helm-demo-notice{font-size:10px;letter-spacing:.12em;color:#6E5C5F;margin-bottom:20px}
+@media(max-width:767px){.helm-sidebar{display:none;position:fixed;inset:0 auto 0 0;z-index:51;overflow-y:auto}.helm-sidebar.is-open{display:flex}.helm-nav-toggle,.helm-nav-close{display:inline-flex}.helm-nav-close{position:absolute;right:12px;top:20px}.helm-nav-backdrop{display:block;position:fixed;inset:0;z-index:50;background:#1F151788}.helm-main{padding:18px 14px}.helm-main>div{min-width:0}}

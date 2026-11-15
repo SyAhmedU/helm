@@ -36,7 +36,7 @@ export default function Courses() {
         </div>
         <div className="space-y-0.5">
           {courses.map(c => (
-            <button key={c.id} onClick={() => setSelected(c.id)} className={`w-full text-left px-2.5 py-2 rounded-lg text-sm transition-colors ${c.id === activeId ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-ink-700 hover:bg-paper-dim'}`}>
+            <button key={c.id} onClick={() => setSelected(c.id)} className={`w-full text-left px-2.5 py-2 rounded-lg text-sm transition-colors ${c.id === activeId ? 'bg-ink-950 text-white font-semibold' : 'text-ink-700 hover:bg-paper-dim'}`}>
               <span className="block truncate">{c.name}</span>
               <span className="text-[11px] text-ink-400">{c.status}</span>
             </button>

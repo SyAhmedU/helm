@@ -38,23 +38,23 @@ export default function Shell({ active, onSelect, children }) {
   return (
     <div className="min-h-screen flex bg-paper">
       {/* Sidebar */}
-      <aside id="helm-navigation" className={`helm-sidebar ${navOpen ? "is-open" : ""} w-64 shrink-0 bg-ink-950 text-white flex flex-col`}>
+      <aside id="helm-navigation" className={`helm-sidebar ${navOpen ? "is-open" : ""} w-64 shrink-0 bg-white text-ink-900 border-r border-line flex flex-col`}>
         <button className="helm-nav-close" aria-label="Close navigation" onClick={() => setNavOpen(false)}><X size={20} /></button>
-        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-white/10">
+        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-line">
           <div className="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center shrink-0"><Anchor size={16} className="text-white" /></div>
           <div className="leading-tight">
             <p className="font-display font-bold text-[15px]">Helm</p>
-            <p className="text-[10px] text-white/40 uppercase tracking-wider">FACE Prep Operations</p>
+            <p className="text-[10px] text-ink-400 uppercase tracking-wider">FACE Prep Operations</p>
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-5">
           {NAV.map((g, gi) => (
             <div key={gi}>
-              {g.label && <p className="px-2.5 text-[10px] font-bold uppercase tracking-wider text-white/30 mb-1.5">{g.label}</p>}
+              {g.label && <p className="px-2.5 text-[10px] font-bold uppercase tracking-wider text-ink-400 mb-1.5">{g.label}</p>}
               <div className="space-y-0.5">
                 {g.items.map(item => (
                   <button key={item.id} aria-current={active === item.id ? "page" : undefined} onClick={() => { onSelect(item.id); setNavOpen(false) }}
-                    className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13.5px] font-medium transition-colors ${active === item.id ? 'bg-brand-500 text-white' : 'text-white/65 hover:bg-white/5 hover:text-white'}`}>
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13.5px] font-medium transition-colors ${active === item.id ? 'bg-ink-950 text-white' : 'text-ink-600 hover:bg-paper-dim hover:text-ink-900'}`}>
                     <item.icon size={16} className="shrink-0" />
                     <span className="truncate">{item.label}</span>
                   </button>
@@ -63,10 +63,10 @@ export default function Shell({ active, onSelect, children }) {
             </div>
           ))}
         </nav>
-        <div className="p-3 border-t border-white/10"><a className="block px-2.5 py-2 text-xs text-white/65" href="https://syed-launchpad.vercel.app">All projects ↗</a>
-          <button onClick={() => setPaletteOpen(true)} className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-[12.5px] text-white/50 hover:bg-white/5 hover:text-white/80 transition-colors">
+        <div className="p-3 border-t border-line"><a className="block px-2.5 py-2 text-xs text-ink-600" href="https://syed-launchpad.vercel.app">All projects ↗</a>
+          <button onClick={() => setPaletteOpen(true)} className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-[12.5px] text-ink-400 hover:bg-paper-dim hover:text-ink-900 transition-colors">
             <span className="flex items-center gap-2"><Command size={13} /> Jump to…</span>
-            <kbd className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">⌘K</kbd>
+            <kbd className="text-[10px] bg-paper-dim px-1.5 py-0.5 rounded">⌘K</kbd>
           </button>
         </div>
       </aside>
@@ -84,7 +84,7 @@ export default function Shell({ active, onSelect, children }) {
               <p className="text-[13px] font-semibold text-ink-900">{user?.name}</p>
               <p className="text-[11px] text-ink-400">{user?.role}</p>
             </div>
-            <div className="w-8 h-8 rounded-full bg-brand-500 text-white flex items-center justify-center text-[12px] font-bold">{(user?.name || '?')[0]}</div>
+            <div className="w-8 h-8 rounded-full bg-ink-950 text-white flex items-center justify-center text-[12px] font-bold">{(user?.name || '?')[0]}</div>
             <button onClick={logout} title="Sign out" className="text-ink-400 hover:text-brand-600 p-1.5"><LogOut size={16} /></button>
           </div>
         </header>

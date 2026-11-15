@@ -95,7 +95,7 @@ function Toggle({ label, hint, checked, onChange }) {
         <span className="text-sm font-medium text-ink-800 block">{label}</span>
         {hint && <span className="text-xs text-ink-400">{hint}</span>}
       </span>
-      <button type="button" onClick={() => onChange(!checked)} className={`w-9 h-5 rounded-full shrink-0 transition-colors relative ${checked ? 'bg-brand-500' : 'bg-ink-300/40'}`}>
+      <button type="button" onClick={() => onChange(!checked)} className={`w-9 h-5 rounded-full shrink-0 transition-colors relative ${checked ? 'bg-ink-950' : 'bg-ink-300/40'}`}>
         <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${checked ? 'left-4.5' : 'left-0.5'}`} style={{ left: checked ? 18 : 2 }} />
       </button>
     </label>

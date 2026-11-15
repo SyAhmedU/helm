@@ -99,7 +99,7 @@ export function SearchSelect({ options, value, onChange, placeholder = 'Select�
           <div className="max-h-56 overflow-y-auto py-1">
             {allowClear && <button type="button" className="w-full text-left px-3 py-1.5 text-sm text-ink-400 hover:bg-paper-dim" onClick={() => { onChange(''); setOpen(false) }}>— None —</button>}
             {filtered.map(o => (
-              <button key={o.id} type="button" className={`w-full text-left px-3 py-1.5 text-sm hover:bg-paper-dim ${o.id === value ? 'font-semibold text-brand-600' : ''}`} onClick={() => { onChange(o.id); setOpen(false); setQ('') }}>{o.label}</button>
+              <button key={o.id} type="button" className={`w-full text-left px-3 py-1.5 text-sm hover:bg-paper-dim ${o.id === value ? 'font-semibold text-ink-950' : ''}`} onClick={() => { onChange(o.id); setOpen(false); setQ('') }}>{o.label}</button>
             ))}
             {!filtered.length && <p className="px-3 py-2 text-sm text-ink-400">No matches</p>}
           </div>
@@ -125,8 +125,8 @@ export function StatCard({ icon: Icon, label, value, sub, tone = 'ink', onClick 
 
 export function Pill({ tone = 'slate', children }) {
   const map = {
-    slate: 'bg-paper-dim text-ink-600', brand: 'bg-brand-50 text-brand-600',
-    amber: 'bg-amber-50 text-amber-700', emerald: 'bg-emerald-50 text-emerald-700', sky: 'bg-sky-50 text-sky-700',
+    slate: 'bg-paper-dim text-ink-600', brand: 'bg-brand-500 text-white',
+    amber: 'bg-[#FFC83D] text-ink-950', emerald: 'bg-emerald-50 text-emerald-700', sky: 'bg-sky-50 text-sky-700',
   }
   return <span className={`chip ${map[tone] || map.slate}`}>{children}</span>
 }

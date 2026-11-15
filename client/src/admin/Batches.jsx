@@ -37,9 +37,9 @@ export default function Batches() {
             const n = batches.filter(b => b.institutionId === inst.id).length
             const active = inst.id === activeInstId
             return (
-              <button key={inst.id} onClick={() => setInstId(inst.id)} className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-sm text-left transition-colors ${active ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-ink-700 hover:bg-paper-dim'}`}>
+              <button key={inst.id} onClick={() => setInstId(inst.id)} className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-sm text-left transition-colors ${active ? 'bg-ink-950 text-white font-semibold' : 'text-ink-700 hover:bg-paper-dim'}`}>
                 <span className="truncate">{inst.name}</span>
-                <span className={`text-[11px] shrink-0 ml-2 ${active ? 'text-brand-500' : 'text-ink-400'}`}>{n}</span>
+                <span className={`text-[11px] shrink-0 ml-2 ${active ? 'text-white/70' : 'text-ink-400'}`}>{n}</span>
               </button>
             )
           })}

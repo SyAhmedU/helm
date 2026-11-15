@@ -3,7 +3,7 @@ import { useCollection } from '../lib/useCollection.js'
 import { SidePanel, Field, Spinner, Empty, Pill, SearchSelect, btnPrimary, btnGhost, inputCls } from '../components/ui.jsx'
 import { Rocket, Plus, Trash2, CalendarClock, Users2 } from 'lucide-react'
 
-const STATUS_TONE = { Scheduled: 'sky', Live: 'brand', Completed: 'emerald' }
+const STATUS_TONE = { Scheduled: 'amber', Live: 'brand', Completed: 'slate' }
 
 export default function Delivery() {
   const { rows, loading, create, remove } = useCollection('administrations')
